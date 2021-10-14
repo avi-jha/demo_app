@@ -1,4 +1,5 @@
 import 'package:demo_app/functions/checkbox.dart';
+import 'package:demo_app/functions/dropdowns.dart';
 import 'package:demo_app/functions/rememberme.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
@@ -662,35 +663,4 @@ class _DeliveryPageState extends State<DeliveryPage> {
   }
 }
 
-class DropDown extends StatefulWidget {
-  @override
-  _DropDownState createState() => _DropDownState();
-}
 
-class _DropDownState extends State<DropDown> {
-  String dropdownValue = 'Mr.';
-
-  @override
-  Widget build(BuildContext context) {
-    return Padding(
-      padding: const EdgeInsets.all(10.0),
-      child: DropdownButtonHideUnderline(
-        child: DropdownButton(
-          value: dropdownValue,
-          onChanged: (String newValue) {
-            setState(() {
-              dropdownValue = newValue;
-            });
-          },
-          items: <String>['Mr.', 'Mrs.', 'Ms.']
-              .map<DropdownMenuItem<String>>((String value) {
-            return DropdownMenuItem<String>(
-              value: value,
-              child: Text(value),
-            );
-          }).toList(),
-        ),
-      ),
-    );
-  }
-}

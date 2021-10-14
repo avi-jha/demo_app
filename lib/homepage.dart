@@ -1,6 +1,6 @@
+import 'package:demo_app/navbarpages/bottomnavigationbar.dart';
 import 'package:demo_app/functions/checkbox.dart';
 import 'package:demo_app/deliverypage.dart';
-import 'package:demo_app/bookingpage.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatelessWidget {
@@ -185,7 +185,7 @@ class MyHomePage extends StatelessWidget {
                                                 context,
                                                 MaterialPageRoute(
                                                   builder: (context) =>
-                                                      BookingPage(),
+                                                      MyBottomNavBar(),
                                                 ),
                                               );
                                                   },
