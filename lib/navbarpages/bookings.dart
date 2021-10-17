@@ -28,7 +28,7 @@ class _BookingPageState extends State<BookingPage> {
         body: TabBarView(
           children: [
             ActiveBookingsPage(),
-            ClosedBookingsPage(),
+            ClosedBookingsList(),
           ],
         ),
             ),

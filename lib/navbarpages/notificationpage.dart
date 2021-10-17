@@ -1,15 +1,39 @@
+import 'package:demo_app/navbarpages/notifications_all.dart';
+import 'package:demo_app/navbarpages/notifications_bookmarked.dart';
 import 'package:flutter/material.dart';
 
 class MyNotificationPage extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text("Notification page"),
-      ),
-      body: Center(
-        child: Text("notification page"),
+    return MaterialApp(
+      title: 'Flutter Demo',
+      home: DefaultTabController(
+        length: 2,
+        child: Scaffold(
+          appBar: AppBar(
+            title: Center(
+              child: Text('Notification'),
+            ),
+            automaticallyImplyLeading: false,
+            bottom: TabBar(
+              //indicatorColor: Colors.white,
+              tabs: [
+                Tab(
+                  text: 'All',
+                ),
+                Tab(
+                  text: 'Bookmarked',
+                ),
+              ],
+            ),
+          ),
+          body: TabBarView(
+            children: [
+              AllNotification(),
+              FavoriteNotification(),
+            ],
+          ),
+        ),
       ),
     );
   }
