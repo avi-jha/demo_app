@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "1021933929276",
+    "project_id": "clorev-phoneauth",
+    "storage_bucket": "clorev-phoneauth.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1021933929276:android:9d0f59221c4ffe854c9439",
+        "android_client_info": {
+          "package_name": "com.example"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1021933929276-4bjkj8pnfunv4k6f81a8ve0b2krki4cq.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example",
+            "certificate_hash": "e283331172e0a5bdff5bbd7ce7c224d5cb720585"
+          }
+        },
+        {
+          "client_id": "1021933929276-nl098glbt31nb72kjapsrk10fhrgc4eg.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA9V4U5tt_fzTIXBjAVuuA6TfGXpdRcD3s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1021933929276-nl098glbt31nb72kjapsrk10fhrgc4eg.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

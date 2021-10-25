@@ -1,9 +1,23 @@
-import 'package:demo_app/navbarpages/bottomnavigationbar.dart';
 import 'package:demo_app/functions/checkbox.dart';
 import 'package:demo_app/deliverypage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:intl_phone_field/intl_phone_field.dart';
+import 'package:otp_text_field/otp_field.dart';
+import 'package:otp_text_field/style.dart';
 
-class MyHomePage extends StatelessWidget {
+class MyHomePage extends StatefulWidget {
+  @override
+  _MyHomePageState createState() => _MyHomePageState();
+}
+
+class _MyHomePageState extends State<MyHomePage> {
+  String verId;
+
+  String phone;
+
+  bool codeSent = false;
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -64,232 +78,143 @@ class MyHomePage extends StatelessWidget {
                               child: Column(
                                 children: [
                                   // input area text fields
-                                  Container(
-                                      child: Column(
-                                    children: [
-                                      Container(
-                                        child: Padding(
-                                          padding: const EdgeInsets.all(8.0),
-                                          child: TextField(
-                                            decoration: InputDecoration(
-                                                border: OutlineInputBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(
-                                                          10.0),
-                                                ),
-                                                filled: true,
-                                                hintStyle: TextStyle(
-                                                    color: Colors.grey[800]),
-                                                hintText:
-                                                    "Enter Mobile Number ",
-                                                fillColor: Colors.white70),
-                                          ),
-                                        ),
-                                      ),
-
-                                      // CheckBox and TOS line
-                                      Check_box(),
-
-                                      // Submit Button
-                                      Container(
-                                        child: TextButton(
-                                          style: ButtonStyle(
-                                            shape: MaterialStateProperty.all<
-                                                    RoundedRectangleBorder>(
-                                                RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(28.0),
-                                            )),
-                                            backgroundColor:
-                                                MaterialStateProperty.all<
-                                                    Color>(Colors.blue),
-                                          ),
-                                          onPressed: () {},
-                                          child: Padding(
-                                            padding: const EdgeInsets.only(
-                                                top: 8.0,
-                                                bottom: 8.0,
-                                                left: 13.0,
-                                                right: 13.0),
-                                            child: Text(
-                                              "Request OTP",
-                                              style: TextStyle(
-                                                color: Colors.white,
-                                                fontSize: 15.0,
+                                  Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Container(
+                                        child: Column(
+                                      children: [
+                                        codeSent
+                                            ? OTPTextField(
+                                                length: 6,
+                                                width: MediaQuery.of(context)
+                                                    .size
+                                                    .width,
+                                                fieldWidth: 30,
+                                                style: TextStyle(fontSize: 20),
+                                                textFieldAlignment:
+                                                    MainAxisAlignment.spaceAround,
+                                                fieldStyle: FieldStyle.underline,
+                                                onCompleted: (pin) {
+                                                  verifyPin(pin);
+                                                },
+                                              )
+                                            : IntlPhoneField(
+                                                decoration: InputDecoration(
+                                                    labelText: 'Phone Number',
+                                                    border: OutlineInputBorder(
+                                                        borderSide:
+                                                            BorderSide())),
+                                                initialCountryCode: 'IN',
+                                                onChanged: (phoneNumber) {
+                                                  setState(() {
+                                                    phone = phoneNumber
+                                                        .completeNumber;
+                                                  });
+                                                },
                                               ),
-                                            ),
-                                          ),
+                                        SizedBox(
+                                          height: 10,
                                         ),
-                                      ),
 
-                                      // enter otp and login button
-                                      Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: Container(
+                                        Check_box(),
+                                        SizedBox(
+                                          height: 10,
+                                        ),
+                                        ElevatedButton(
+                                          onPressed: () {
+                                            verifyPhone();
+                                          },
+                                          child: Text("Verify"),
+                                        ),
+                                        // divider with text in between
+                                        Container(
                                           child: Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.center,
                                             children: [
+                                              Expanded(
+                                                child: Container(
+                                                  margin: const EdgeInsets.only(
+                                                      left: 25.0),
+                                                  child: Divider(
+                                                    thickness: 3.0,
+                                                    color: Colors.black,
+                                                  ),
+                                                ),
+                                              ),
                                               Padding(
                                                 padding:
-                                                    const EdgeInsets.all(10.0),
-                                                child: Container(
-                                                  width: MediaQuery.of(context)
-                                                          .size
-                                                          .width /
-                                                      3,
-                                                  height: 45.0,
-                                                  child: TextFormField(
-                                                    decoration: InputDecoration(
-                                                        border:
-                                                            OutlineInputBorder(
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(
-                                                                      8.0),
-                                                        ),
-                                                        filled: true,
-                                                        hintStyle: TextStyle(
-                                                            color: Colors
-                                                                .grey[800]),
-                                                        hintText: "Enter OTP ",
-                                                        fillColor:
-                                                            Colors.white70),
-                                                  ),
-                                                ),
+                                                    const EdgeInsets.all(8.0),
+                                                child: Text("Or Sign In as"),
                                               ),
-                                              SizedBox(
-                                                height: 45.0,
-                                                width: MediaQuery.of(context)
-                                                        .size
-                                                        .width /
-                                                    3,
-                                                child: TextButton(
-                                                  style: ButtonStyle(
-                                                    shape: MaterialStateProperty
-                                                        .all<
-                                                            RoundedRectangleBorder>(
-                                                      RoundedRectangleBorder(
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(8.0),
-                                                      ),
-                                                    ),
-                                                    backgroundColor:
-                                                        MaterialStateProperty
-                                                            .all<Color>(
-                                                                Colors.blue),
-                                                  ),
-                                                  onPressed: () {
-                                                    Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      MyBottomNavBar(),
-                                                ),
-                                              );
-                                                  },
-                                                  child: Text(
-                                                    "Login",
-                                                    style: TextStyle(
-                                                      color: Colors.white,
-                                                      fontSize: 15.0,
-                                                    ),
-                                                  ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                      ),
-                                      // divider with text in between
-                                      Container(
-                                        child: Row(
-                                          children: [
-                                            Expanded(
-                                              child: Container(
+                                              Expanded(
+                                                  child: Container(
                                                 margin: const EdgeInsets.only(
-                                                    left: 25.0),
+                                                    right: 25.0),
                                                 child: Divider(
                                                   thickness: 3.0,
                                                   color: Colors.black,
                                                 ),
+                                              )),
+                                            ],
+                                          ),
+                                        ),
+
+                                        // Links to new pages
+                                        Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.center,
+                                          children: [
+                                            TextButton(
+                                              onPressed: () {/* ----- */},
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Service Provider",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .keyboard_arrow_right_outlined,
+                                                    color: Colors.blueAccent,
+                                                  ),
+                                                ],
                                               ),
                                             ),
-                                            Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: Text("Or Sign In as"),
+                                            SizedBox(
+                                              width: 10.0,
                                             ),
-                                            Expanded(
-                                                child: Container(
-                                              margin: const EdgeInsets.only(
-                                                  right: 25.0),
-                                              child: Divider(
-                                                thickness: 3.0,
-                                                color: Colors.black,
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.push(
+                                                  context,
+                                                  MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        DeliveryPage(),
+                                                  ),
+                                                );
+                                              },
+                                              child: Row(
+                                                children: [
+                                                  Text(
+                                                    "Delivery Partner",
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                    ),
+                                                  ),
+                                                  Icon(
+                                                    Icons
+                                                        .keyboard_arrow_right_outlined,
+                                                    color: Colors.blueAccent,
+                                                  ),
+                                                ],
                                               ),
-                                            )),
+                                            )
                                           ],
                                         ),
-                                      ),
-
-                                      // Links to new pages
-                                      Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        children: [
-                                          TextButton(
-                                            onPressed: () {/* ----- */},
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Service Provider",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons
-                                                      .keyboard_arrow_right_outlined,
-                                                  color: Colors.blueAccent,
-                                                ),
-                                              ],
-                                            ),
-                                          ),
-                                          SizedBox(
-                                            width: 10.0,
-                                          ),
-                                          TextButton(
-                                            onPressed: () {
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      DeliveryPage(),
-                                                ),
-                                              );
-                                            },
-                                            child: Row(
-                                              children: [
-                                                Text(
-                                                  "Delivery Partner",
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                                Icon(
-                                                  Icons
-                                                      .keyboard_arrow_right_outlined,
-                                                  color: Colors.blueAccent,
-                                                ),
-                                              ],
-                                            ),
-                                          )
-                                        ],
-                                      ),
-                                    ],
-                                  )),
+                                      ],
+                                    )),
+                                  ),
                                 ],
                               ),
                             ),
@@ -303,5 +228,45 @@ class MyHomePage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  verifyPhone() async {
+    await FirebaseAuth.instance.verifyPhoneNumber(
+        phoneNumber: phone,
+        verificationCompleted: (PhoneAuthCredential credential) async {
+          await FirebaseAuth.instance.signInWithCredential(credential);
+          final snackBar = SnackBar(content: Text("Login Success"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        verificationFailed: (FirebaseAuthException e) {
+          final snackBar = SnackBar(content: Text("${e.message}"));
+          ScaffoldMessenger.of(context).showSnackBar(snackBar);
+        },
+        codeSent: (String verficationId, int resendToken) {
+          setState(() {
+            codeSent = true;
+            verId = verficationId;
+          });
+        },
+        codeAutoRetrievalTimeout: (String verificationId) {
+          setState(() {
+            verId = verificationId;
+          });
+        },
+        timeout: Duration(seconds: 60));
+  }
+
+  Future<void> verifyPin(String pin) async {
+    PhoneAuthCredential credential =
+        PhoneAuthProvider.credential(verificationId: verId, smsCode: pin);
+
+    try {
+      await FirebaseAuth.instance.signInWithCredential(credential);
+      final snackBar = SnackBar(content: Text("Login Success"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    } on FirebaseAuthException catch (e) {
+      final snackBar = SnackBar(content: Text("${e.message}"));
+      ScaffoldMessenger.of(context).showSnackBar(snackBar);
+    }
   }
 }
