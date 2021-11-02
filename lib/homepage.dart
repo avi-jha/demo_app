@@ -1,10 +1,9 @@
-import 'package:demo_app/functions/checkbox.dart';
-import 'package:demo_app/deliverypage.dart';
+import 'package:country_code_picker/country_code_picker.dart';
+import 'package:demo_app/navbarpages/navbarpages.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:intl_phone_field/intl_phone_field.dart';
-import 'package:otp_text_field/otp_field.dart';
-import 'package:otp_text_field/style.dart';
+import 'package:pinput/pin_put/pin_put.dart';
+
 
 class MyHomePage extends StatefulWidget {
   @override
@@ -12,261 +11,350 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String verId;
+  bool value = false;
+  String dialCodeDigits = '+91';
+  TextEditingController _controller = TextEditingController();
+  final GlobalKey<ScaffoldState> _scaffolkey = GlobalKey<ScaffoldState>();
+  final TextEditingController _pinOTPCodeController = TextEditingController();
+  final FocusNode _pinOTPCodeFocus = FocusNode();
+  String verificationCode;
 
-  String phone;
+  final BoxDecoration pinOTPCodeDecoration = BoxDecoration(
+    color: Colors.blueAccent,
+    borderRadius: BorderRadius.circular(10.0),
+    border: Border.all(
+      color: Colors.grey,
+    ),
+  );
 
-  bool codeSent = false;
+  void verifyPhoneNumber() async {
+    print('Click !!!');
+    await FirebaseAuth.instance.verifyPhoneNumber(
+      phoneNumber: '${dialCodeDigits + _controller.text}',
+      verificationCompleted: (PhoneAuthCredential credential) async {
+        await FirebaseAuth.instance
+            .signInWithCredential(credential)
+            .then((value) {
+          if (value.user != null) {
+            Navigator.of(context)
+                .push(MaterialPageRoute(builder: (c) => MyNavBarPages()));
+          }
+        });
+      },
+      verificationFailed: (FirebaseAuthException e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text(e.message.toString()),
+            duration: Duration(seconds: 3),
+          ),
+        );
+      },
+      codeSent: (String vID, int resendToken) {
+        setState(() {
+          verificationCode = vID;
+        });
+      },
+      codeAutoRetrievalTimeout: (String vID) {
+        setState(() {
+          verificationCode = vID;
+        });
+      },
+      timeout: Duration(seconds: 60),
+    );
+  }
+
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Container(
-        decoration: new BoxDecoration(
-            image: new DecorationImage(
-          image: new AssetImage("assets/background.jpg"),
+    return Container(
+      width: double.infinity,
+      decoration: BoxDecoration(
+        image: DecorationImage(
+          image: AssetImage('assets/background.jpg'),
           fit: BoxFit.cover,
-        )),
-        child: Scaffold(
-          backgroundColor: Colors.transparent,
-          body: Container(
-            child: SingleChildScrollView(
-              child: ConstrainedBox(
-                constraints: BoxConstraints(
-                  minWidth: MediaQuery.of(context).size.width,
-                  minHeight: MediaQuery.of(context).size.height,
-                ),
-                child: IntrinsicHeight(
+        ),
+      ),
+      child: Scaffold(
+        backgroundColor: Colors.transparent,
+        key: _scaffolkey,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              SizedBox(
+                height: 75,
+              ),
+              FlutterLogo(
+                size: 200,
+              ),
+              SizedBox(
+                height: 75,
+              ),
+              Card(
+                child: Padding(
+                  padding: const EdgeInsets.all(8.0),
                   child: Column(
-                    mainAxisSize: MainAxisSize.max,
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Welcome Text
-                      Center(
-                        child: Column(
-                          children: [
-                            Text(
-                              "How",
-                              style: TextStyle(
-                                  fontSize: 30.0, color: Colors.white),
+                      Row(
+                        children: [
+                          SizedBox(
+                            height: 60,
+                            width: 120,
+                            child: CountryCodePicker(
+                              onChanged: (country) {
+                                setState(() {
+                                  dialCodeDigits = country.dialCode;
+                                });
+                              },
+                              initialSelection: 'IN',
+                              showCountryOnly: false,
+                              showOnlyCountryWhenClosed: false,
                             ),
-                            Text(
-                              "CLOREV",
-                              style: TextStyle(
-                                  fontSize: 50.0, color: Colors.white),
-                            ),
-                            Text(
-                              "Works",
-                              style: TextStyle(
-                                  fontSize: 30.0, color: Colors.white),
-                            ),
-                          ],
-                        ),
-                      ),
-                      SizedBox(height: MediaQuery.of(context).size.height / 10),
-
-                      // curved card shape for sign in/ sign up
-                      ClipRRect(
-                          borderRadius: BorderRadius.only(
-                            topRight: Radius.circular(10.0),
-                            topLeft: Radius.circular(10.0),
                           ),
-                          child: Container(
-                            color: Colors.white,
-                            child: Center(
-                              child: Column(
-                                children: [
-                                  // input area text fields
-                                  Padding(
-                                    padding: const EdgeInsets.all(8.0),
-                                    child: Container(
-                                        child: Column(
-                                      children: [
-                                        codeSent
-                                            ? OTPTextField(
-                                                length: 6,
-                                                width: MediaQuery.of(context)
-                                                    .size
-                                                    .width,
-                                                fieldWidth: 30,
-                                                style: TextStyle(fontSize: 20),
-                                                textFieldAlignment:
-                                                    MainAxisAlignment.spaceAround,
-                                                fieldStyle: FieldStyle.underline,
-                                                onCompleted: (pin) {
-                                                  verifyPin(pin);
-                                                },
-                                              )
-                                            : IntlPhoneField(
-                                                decoration: InputDecoration(
-                                                    labelText: 'Phone Number',
-                                                    border: OutlineInputBorder(
-                                                        borderSide:
-                                                            BorderSide())),
-                                                initialCountryCode: 'IN',
-                                                onChanged: (phoneNumber) {
-                                                  setState(() {
-                                                    phone = phoneNumber
-                                                        .completeNumber;
-                                                  });
-                                                },
-                                              ),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-
-                                        Check_box(),
-                                        SizedBox(
-                                          height: 10,
-                                        ),
-                                        ElevatedButton(
-                                          onPressed: () {
-                                            verifyPhone();
-                                          },
-                                          child: Text("Verify"),
-                                        ),
-                                        // divider with text in between
-                                        Container(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: Container(
-                                                  margin: const EdgeInsets.only(
-                                                      left: 25.0),
-                                                  child: Divider(
-                                                    thickness: 3.0,
-                                                    color: Colors.black,
-                                                  ),
-                                                ),
-                                              ),
-                                              Padding(
-                                                padding:
-                                                    const EdgeInsets.all(8.0),
-                                                child: Text("Or Sign In as"),
-                                              ),
-                                              Expanded(
-                                                  child: Container(
-                                                margin: const EdgeInsets.only(
-                                                    right: 25.0),
-                                                child: Divider(
-                                                  thickness: 3.0,
-                                                  color: Colors.black,
-                                                ),
-                                              )),
-                                            ],
-                                          ),
-                                        ),
-
-                                        // Links to new pages
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.center,
-                                          children: [
-                                            TextButton(
-                                              onPressed: () {/* ----- */},
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Service Provider",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons
-                                                        .keyboard_arrow_right_outlined,
-                                                    color: Colors.blueAccent,
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                            SizedBox(
-                                              width: 10.0,
-                                            ),
-                                            TextButton(
-                                              onPressed: () {
-                                                Navigator.push(
-                                                  context,
-                                                  MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        DeliveryPage(),
-                                                  ),
-                                                );
-                                              },
-                                              child: Row(
-                                                children: [
-                                                  Text(
-                                                    "Delivery Partner",
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                    ),
-                                                  ),
-                                                  Icon(
-                                                    Icons
-                                                        .keyboard_arrow_right_outlined,
-                                                    color: Colors.blueAccent,
-                                                  ),
-                                                ],
-                                              ),
-                                            )
-                                          ],
-                                        ),
-                                      ],
-                                    )),
+                          Expanded(
+                            child: Container(
+                              margin:
+                              EdgeInsets.only(top: 10, right: 10, left: 10),
+                              decoration: BoxDecoration(
+                                border: Border.all(color: Colors.white),
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.white,
+                              ),
+                              child: TextField(
+                                decoration: InputDecoration(
+                                  hintText: 'Phone Number',
+                                  prefix: Padding(
+                                    padding: EdgeInsets.all(4),
+                                    child: Text(dialCodeDigits),
                                   ),
-                                ],
+                                  border: OutlineInputBorder(
+                                    borderRadius: BorderRadius.circular(10.0),
+                                  ),
+                                ),
+                                maxLength: 12,
+                                keyboardType: TextInputType.number,
+                                controller: _controller,
+                                onChanged: (_) {
+                                  setState(() {});
+                                },
                               ),
                             ),
-                          ))
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        children: [
+                          Checkbox(
+                            value: this.value,
+                            onChanged: (bool value) {
+                              setState(() {
+                                this.value = value;
+                              });
+                            },
+                          ),
+                          Flexible(
+                            child: Text(
+                              'I  have  read and do hereby agree to the Terms of Use and Privacy Policy of CLORVE Laundry.',
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(
+                        height: 20,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            height: 50,
+                            child: ElevatedButton(
+                              onPressed: () {
+                                print('Click me');
+                                verifyPhoneNumber();
+                              },
+                              child: Text(
+                                'Request OTP',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 20),
+                        child: Center(
+                          child: GestureDetector(
+                            /* onTap: () {
+                              verifyPhoneNumber();
+                            }, */
+                            child: Text(
+                              'Verifying : ${dialCodeDigits}-${_controller.text}',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.all(10.0),
+                        child: PinPut(
+                          fieldsCount: 6,
+                          textStyle: TextStyle(
+                            fontSize: 25,
+                            color: Colors.white,
+                          ),
+                          eachFieldWidth: 40.0,
+                          focusNode: _pinOTPCodeFocus,
+                          controller: _pinOTPCodeController,
+                          submittedFieldDecoration: pinOTPCodeDecoration,
+                          selectedFieldDecoration: pinOTPCodeDecoration,
+                          followingFieldDecoration: pinOTPCodeDecoration,
+                          pinAnimationType: PinAnimationType.rotation,
+                          onSubmit: (pin) async {
+                            try {
+                              await FirebaseAuth.instance
+                                  .signInWithCredential(
+                                  PhoneAuthProvider.credential(
+                                      verificationId: verificationCode,
+                                      smsCode: pin))
+                                  .then((value) => {
+                                if (value.user != null)
+                                  {
+                                    Navigator.of(context).push(
+                                        MaterialPageRoute(
+                                            builder: (c) =>
+                                                MyNavBarPages()))
+                                  }
+                              });
+                            } catch (e) {
+                              FocusScope.of(context).unfocus();
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                SnackBar(
+                                  content: Text('Invalid OTP'),
+                                  duration: Duration(seconds: 3),
+                                ),
+                              );
+                            }
+                          },
+                        ),
+                      ),
+                      /* Row(
+                        mainAxisAlignment: MainAxisAlignment.end,
+                        children: [
+                          SizedBox(
+                            width: 200,
+                            height: 50,
+                            child: ElevatedButton.icon(
+                              icon: Icon(Icons.login),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) => MyBottomNavBar(),
+                                  ),
+                                );
+                              },
+                              label: Text(
+                                'Login',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ), */
+                      SizedBox(
+                        height: 10,
+                      ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          SizedBox(
+                            height: 45,
+                            child: TextButton.icon(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        MyNavBarPages(),
+                                  ),
+                                );
+                              },
+                              label: Text(
+                                'Service Provider',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              style: TextButton.styleFrom(
+                                primary: Colors.black,
+                              ),
+                              icon: Icon(
+                                Icons.keyboard_arrow_right_outlined,
+                                color: Colors.blue,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 4,
+                            child: Text(
+                              '|',
+                              style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18,
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            height: 45,
+                            child: TextButton.icon(
+                              onPressed: () {
+                                print('Click me');
+                              },
+                              label: Text(
+                                'Delivery Partner',
+                                style: TextStyle(
+                                  fontSize: 17,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              icon: Icon(
+                                Icons.keyboard_arrow_right,
+                                color: Colors.blue,
+                              ),
+                              style: TextButton.styleFrom(
+                                primary: Colors.black,
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
                     ],
                   ),
                 ),
               ),
-            ),
+            ],
           ),
         ),
       ),
     );
-  }
-
-  verifyPhone() async {
-    await FirebaseAuth.instance.verifyPhoneNumber(
-        phoneNumber: phone,
-        verificationCompleted: (PhoneAuthCredential credential) async {
-          await FirebaseAuth.instance.signInWithCredential(credential);
-          final snackBar = SnackBar(content: Text("Login Success"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        verificationFailed: (FirebaseAuthException e) {
-          final snackBar = SnackBar(content: Text("${e.message}"));
-          ScaffoldMessenger.of(context).showSnackBar(snackBar);
-        },
-        codeSent: (String verficationId, int resendToken) {
-          setState(() {
-            codeSent = true;
-            verId = verficationId;
-          });
-        },
-        codeAutoRetrievalTimeout: (String verificationId) {
-          setState(() {
-            verId = verificationId;
-          });
-        },
-        timeout: Duration(seconds: 60));
-  }
-
-  Future<void> verifyPin(String pin) async {
-    PhoneAuthCredential credential =
-        PhoneAuthProvider.credential(verificationId: verId, smsCode: pin);
-
-    try {
-      await FirebaseAuth.instance.signInWithCredential(credential);
-      final snackBar = SnackBar(content: Text("Login Success"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    } on FirebaseAuthException catch (e) {
-      final snackBar = SnackBar(content: Text("${e.message}"));
-      ScaffoldMessenger.of(context).showSnackBar(snackBar);
-    }
   }
 }
