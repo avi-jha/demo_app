@@ -1,4 +1,4 @@
-import 'package:demo_app/navbarpages/profilepage.dart';
+import 'package:demo_app/userpages/cancelbookinguser.dart';
 import 'package:flutter/material.dart';
 
 class ActiveBookingsPageUser extends StatefulWidget {
@@ -558,7 +558,20 @@ class _ActiveBookingsPageUserState extends State<ActiveBookingsPageUser> {
                         padding: const EdgeInsets.all(8.0),
                         child: Row(
                           children: [
-                            Text('Cancel Booking'),
+                            TextButton(
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                    builder: (context) =>
+                                        CancelBookingPageUser(),
+                                  ),
+                                );
+                              },
+                              child: Text(
+                                'Cancel Booking',
+                              ),
+                            ),
                             new Spacer(),
                             Text('Need Help?'),
                           ],
@@ -642,10 +655,8 @@ class _ActiveBookingsPageUserState extends State<ActiveBookingsPageUser> {
                                         color: Colors.black),
                                     children: const <TextSpan>[
                                       TextSpan(
-                                          text:
-                                              '1c, 21, Sec-2, Gole market, Peshwa \n'
-                                              'Road, New Delhi, 110001\n'
-                                              'Landmark: Peshwa Road',
+                                          text: 'is coming to pick\n'
+                                              'your laundry.',
                                           style: TextStyle(
                                               fontWeight: FontWeight.normal)),
                                     ],
@@ -712,21 +723,15 @@ class _ActiveBookingsPageUserState extends State<ActiveBookingsPageUser> {
                                 shape: MaterialStateProperty.all<
                                     RoundedRectangleBorder>(
                                   RoundedRectangleBorder(
-                                    borderRadius:
-                                    BorderRadius.circular(8.0),
+                                    borderRadius: BorderRadius.circular(8.0),
                                   ),
                                 ),
                                 backgroundColor:
-                                MaterialStateProperty.all<Color>(
-                                    Colors.blue),
+                                    MaterialStateProperty.all<Color>(
+                                        Colors.blue),
                               ),
                               onPressed: () {
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (context) => ProfilePage(),
-                                  ),
-                                );
+                                // todo: verify otp
                               },
                               child: Text(
                                 "Verify",
@@ -736,6 +741,109 @@ class _ActiveBookingsPageUserState extends State<ActiveBookingsPageUser> {
                                 ),
                               ),
                             ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Padding(
+                  padding: const EdgeInsets.all(8.0),
+                  child: TextButton(
+                    style: ButtonStyle(
+                      backgroundColor:
+                          MaterialStateProperty.all<Color>(Colors.blue),
+                    ),
+                    onPressed: () {},
+                    child: Text(
+                      'Pay balance 50% Amount ₹0,000/-',
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ),
+                ),
+                Container(
+                  width: MediaQuery.of(context).size.width - 50.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(5.0),
+                    border: Border.all(color: Colors.black),
+                  ),
+                  child: Column(
+                    children: [
+                      Row(
+                        children: [
+                          Row(
+                            children: [
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Icon(
+                                  Icons.person_rounded,
+                                  color: Colors.black,
+                                ),
+                              ),
+
+                              // ToDo: Name and data are hard coded
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: RichText(
+                                  text: TextSpan(
+                                    text: 'Aryan Singh \n \n \n',
+                                    style: TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black),
+                                    children: const <TextSpan>[
+                                      TextSpan(
+                                          text: 'is going to deliver\n'
+                                              'your laundry.',
+                                          style: TextStyle(
+                                              fontWeight: FontWeight.normal)),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                              Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: TextButton(
+                                  style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all<Color>(
+                                            Colors.blue),
+                                  ),
+                                  onPressed: () {},
+                                  child: Row(
+                                    children: [
+                                      Icon(
+                                        Icons.wifi_calling_rounded,
+                                        color: Colors.white,
+                                      ),
+                                      Text(
+                                        'Call',
+                                        style: TextStyle(color: Colors.white),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                      Row(
+                        children: [
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child: Icon(
+                              Icons.favorite,
+                              color: Colors.blue,
+                            ),
+                          ),
+                          Padding(
+                            padding: const EdgeInsets.all(8.0),
+                            child:
+                                Text('Tell this OTP [XXXX] to Delivery Guy, to'
+                                    '\n authenticate yourseld.'),
                           ),
                         ],
                       ),
