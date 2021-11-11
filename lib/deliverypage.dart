@@ -1,7 +1,6 @@
 import 'package:demo_app/functions/checkbox.dart';
 import 'package:demo_app/functions/dropdowns.dart';
 import 'package:demo_app/functions/rememberme.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class DeliveryPage extends StatefulWidget {

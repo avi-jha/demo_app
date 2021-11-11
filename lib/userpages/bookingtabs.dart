@@ -17,7 +17,7 @@ class _BookingPageState extends State<BookingPage> {
           title: TabBar(
             tabs: [
               Tab(
-                text: 'Active Bookings 1',
+                text: 'Active Bookings',
               ),
               Tab(
                 text: 'Closed Bookings',
