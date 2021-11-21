@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 
-class ClosedBookingsDetailsUser extends StatelessWidget {
+class SavedCardsUser extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: Text('Booking #CRB121202112'),
+        title: Text(
+          'Saved Cards'
+        ),
       ),
       body: SingleChildScrollView(
         child: ConstrainedBox(
@@ -21,7 +23,15 @@ class ClosedBookingsDetailsUser extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.start,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(),
+                Card(
+                  child: Column(
+                    children: [
+                      Row(
+
+                      ),
+                    ],
+                  ),
+                ),
               ],
             ),
           ),

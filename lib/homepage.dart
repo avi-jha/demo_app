@@ -1,7 +1,7 @@
 import 'package:demo_app/functions/checkbox.dart';
 import 'package:demo_app/deliverypage.dart';
-import 'package:demo_app/navbarpages/navbarpages.dart';
 import 'package:demo_app/userpages/bookingtabs.dart';
+import 'package:demo_app/userpages/userhomepage.dart';
 import 'package:flutter/material.dart';
 
 class MyHomePage extends StatefulWidget {
@@ -18,7 +18,7 @@ class _MyHomePageState extends State<MyHomePage> {
       home: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
-          image: new AssetImage("assets/background.jpg"),
+          image: new AssetImage("assets/background.webp"),
           fit: BoxFit.cover,
         )),
         child: Scaffold(
@@ -92,7 +92,7 @@ class _MyHomePageState extends State<MyHomePage> {
                                               context,
                                               MaterialPageRoute(
                                                 builder: (context) =>
-                                                    BookingPage(),
+                                                    UserHomePage(),
                                               ),
                                             );
                                           },

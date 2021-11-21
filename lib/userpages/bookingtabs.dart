@@ -1,5 +1,5 @@
 import 'package:demo_app/userpages/activebookingsuser.dart';
-import 'package:demo_app/userpages/closedbookingsuser.dart';
+import 'package:demo_app/userpages/savedcards.dart';
 import 'package:flutter/material.dart';
 
 class BookingPage extends StatefulWidget {
@@ -28,7 +28,8 @@ class _BookingPageState extends State<BookingPage> {
         body: TabBarView(
           children: [
             ActiveBookingsPageUser(),
-            ClosedBookingsPageUser(),
+            //todo: link to closed bookings
+            SavedCardsUser(),
           ],
         ),
       ),

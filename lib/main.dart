@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
       home: Container(
         decoration: new BoxDecoration(
             image: new DecorationImage(
-              image: new AssetImage("assets/background.jpg"),
+              image: new AssetImage("assets/background.webp"),
               fit: BoxFit.cover,
             )),
         // Homepage

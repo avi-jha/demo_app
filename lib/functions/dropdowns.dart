@@ -1,6 +1,41 @@
 import 'package:flutter/material.dart';
 
 
+class DailyWear extends StatefulWidget {
+
+  @override
+  _DailyWearState createState() => _DailyWearState();
+}
+
+class _DailyWearState extends State<DailyWear> {
+  String dropdownValue = 'Daily Wear';
+
+  @override
+  Widget build(BuildContext context) {
+    return DropdownButtonHideUnderline(
+      child: DropdownButton(
+        value: dropdownValue,
+        onChanged: (String newValue) {
+          setState(() {
+            dropdownValue = newValue;
+          });
+        },
+        items: <String>['Mr.', 'Mrs.', 'Ms.']
+            .map<DropdownMenuItem<String>>((String value) {
+          return DropdownMenuItem<String>(
+            value: value,
+            child: Text(value),
+          );
+        }).toList(),
+      ),
+    );
+  }
+}
+
+
+
+
+
 class DropDown extends StatefulWidget {
   @override
   _DropDownState createState() => _DropDownState();
