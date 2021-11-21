@@ -1,4 +1,5 @@
 import 'package:demo_app/userpages/chooseservicepage.dart';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class UserHomePage extends StatefulWidget {
@@ -221,16 +222,56 @@ class _UserHomePageState extends State<UserHomePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white60,
-                  border: Border.all(color: Colors.grey),
-                ),
-                height: 150,
-                width: MediaQuery.of(context).size.width - 100,
-              ),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+                child: Row(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white60,
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      height: 150,
+                      width: MediaQuery.of(context).size.width - 100,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white60,
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      height: 150,
+                      width: MediaQuery.of(context).size.width - 100,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white60,
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      height: 150,
+                      width: MediaQuery.of(context).size.width - 100,
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.all(15.0),
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Colors.white60,
+                        border: Border.all(color: Colors.grey),
+                      ),
+                      height: 150,
+                      width: MediaQuery.of(context).size.width - 100,
+                    ),
+                  ),
+                ],
+              )
             ),
             Padding(
               padding: const EdgeInsets.all(13.0),
@@ -242,16 +283,56 @@ class _UserHomePageState extends State<UserHomePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white60,
-                  border: Border.all(color: Colors.grey),
-                ),
-                height: 150,
-                width: MediaQuery.of(context).size.width - 100,
-              ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                  ],
+                )
             ),
             Padding(
               padding: const EdgeInsets.all(13.0),
@@ -263,16 +344,56 @@ class _UserHomePageState extends State<UserHomePage> {
                 ),
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.all(15.0),
-              child: Container(
-                decoration: BoxDecoration(
-                  color: Colors.white60,
-                  border: Border.all(color: Colors.grey),
-                ),
-                height: 150,
-                width: MediaQuery.of(context).size.width - 100,
-              ),
+            SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Row(
+                  children: [
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                    Padding(
+                      padding: const EdgeInsets.all(15.0),
+                      child: Container(
+                        decoration: BoxDecoration(
+                          color: Colors.white60,
+                          border: Border.all(color: Colors.grey),
+                        ),
+                        height: 150,
+                        width: MediaQuery.of(context).size.width - 100,
+                      ),
+                    ),
+                  ],
+                )
             ),
           ],
         ),
